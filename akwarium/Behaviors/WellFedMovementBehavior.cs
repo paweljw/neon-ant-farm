@@ -20,7 +20,7 @@ namespace akwarium.Behaviors
 
         public override void process()
         {
-            Console.WriteLine("Well fed pop");
+        //    Console.WriteLine("Well fed pop");
             Point pos  = parent.Pos();
             Point clip      = parent.Clip();
 

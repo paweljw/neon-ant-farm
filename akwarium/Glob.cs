@@ -30,7 +30,15 @@ namespace akwarium
 
         public bool Structure(Point p)
         {
-            return arr[p.X][p.Y].Structure;
+            try
+            {
+                return arr[p.X][p.Y].Structure;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
 
         public int Upgrades(Point p)
