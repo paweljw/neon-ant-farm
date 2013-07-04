@@ -36,19 +36,26 @@ namespace akwarium.Behaviors
 
         public override void process()
         {
-            parent.Glob().parent.Invoke(
-                new Form1.addAgentXYDelegate(
-                    parent.Glob().parent.addAgentXY
-                    ), 
-                new object[] 
-                { 
-                    parent.Pos().X, 
-                    parent.Pos().Y, 
-                    parent.Col() 
-                }
-            );
-            
-            parent.Fed(80);
+            try
+            {
+                parent.Glob().parent.Invoke(
+                    new Form1.addAgentXYDelegate(
+                        parent.Glob().parent.addAgentXY
+                        ),
+                    new object[] 
+                    { 
+                        parent.Pos().X, 
+                        parent.Pos().Y, 
+                        parent.Col() 
+                    }
+                );
+
+                parent.Fed(80);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }

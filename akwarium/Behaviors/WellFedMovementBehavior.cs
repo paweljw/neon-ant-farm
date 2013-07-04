@@ -48,8 +48,8 @@ namespace akwarium.Behaviors
             if (lowerX < 0) lowerX = 0;
             if (lowerY < 0) lowerY = 0;
 
-            if (upperX > clip.X) upperX = clip.X;
-            if (upperY > clip.Y) upperY = clip.Y;
+            if (upperX > clip.X) upperX = clip.X-1;
+            if (upperY > clip.Y) upperY = clip.Y-1;
 
             int dirX = -1, dirY = -1;
 

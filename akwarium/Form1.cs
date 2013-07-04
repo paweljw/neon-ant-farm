@@ -43,7 +43,7 @@ namespace akwarium
                 while (moverThread.IsAlive) { } // spin
 
             glob = null;
-            glob = new Glob(panel1.Width+1, panel1.Height+1, this);
+            glob = new Glob(panel1.Width, panel1.Height, this);
 
             lst = null;
             lst = new List<IAgent>();

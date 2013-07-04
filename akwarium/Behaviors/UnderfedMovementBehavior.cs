@@ -11,7 +11,6 @@ namespace akwarium.Behaviors
     class UnderfedMovementBehavior : MovementBehavior
     {
         Random rnd = new Random();
-        int minimumFoodLevel;
 
         public override bool isEligible()
         {
@@ -41,8 +40,8 @@ namespace akwarium.Behaviors
             if (lowerX < 0) lowerX = 0;
             if (lowerY < 0) lowerY = 0;
 
-            if (upperX > clip.X) upperX = clip.X;
-            if (upperY > clip.Y) upperY = clip.Y;
+            if (upperX > clip.X) upperX = clip.X-1;
+            if (upperY > clip.Y) upperY = clip.Y-1;
 
             int bestX = -1, bestY = -1;
             double best = 0;
@@ -106,7 +105,6 @@ namespace akwarium.Behaviors
         public UnderfedMovementBehavior(IAgent p)
         {
             parent = p;
-            minimumFoodLevel = 0;
         }
     }
 }
