@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
+using akwarium.Agents;
+
 namespace akwarium
 {
     public partial class Form1 : Form
@@ -41,7 +43,7 @@ namespace akwarium
                 while (moverThread.IsAlive) { } // spin
 
             glob = null;
-            glob = new Glob(panel1.Width, panel1.Height, this);
+            glob = new Glob(panel1.Width+1, panel1.Height+1, this);
 
             lst = null;
             lst = new List<IAgent>();
@@ -126,10 +128,30 @@ namespace akwarium
                 Point p = lst[i].Pos();
 
                 // red rectangles <3
-                for(int j=0; j<3;j++)
-                    for(int k=0;k<3;k++)
-                        if(p.X+j < bwutw.Width && p.Y+k < bwutw.Height)
-                            lb.SetPixel(p.X+j, p.Y+k, lst[i].Col());
+                if (lst[i].drawAs() == DrawSymbols.DOT)
+                {
+                    for (int j = 0; j < 3; j++)
+                        for (int k = 0; k < 3; k++)
+                            if (p.X + j < bwutw.Width && p.Y + k < bwutw.Height)
+                                lb.SetPixel(p.X + j, p.Y + k, lst[i].Col());
+                }
+                else if (lst[i].drawAs() == DrawSymbols.CROSS)
+                {
+                    int wd = glob.Upgrades(p)*5;
+                    int XB = p.X - wd;
+                    int XT = p.X + wd;
+
+                    int YB = p.Y - wd;
+                    int YT = p.Y + wd;
+
+                    for(int j=XB; j<=XT; j++)
+                        if(j < bwutw.Width)
+                            lb.SetPixel(j, p.Y, lst[i].Col());
+
+                    for (int j = YB; j <= YT; j++)
+                        if (j < bwutw.Height)
+                            lb.SetPixel(p.X, j, lst[i].Col());
+                }
             }
 
             lb.UnlockBits();
@@ -237,6 +259,12 @@ namespace akwarium
         public void addAgentXY(int x, int y, Color c)
         {
             lst.Add(new SimpleAgent(new Point(panel1.Width, panel1.Height), new Point(x,y), glob, c));
+            repaint();
+        }
+
+        public void addFTAgentXY(int x, int y, Color c)
+        {
+            lst.Add(new FoodTickerAgent(new Point(panel1.Width, panel1.Height), new Point(x, y), glob, c));
             repaint();
         }
 

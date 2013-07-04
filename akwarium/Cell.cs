@@ -10,6 +10,9 @@ namespace akwarium
     {
         private float food;
 
+        private bool structure = false;
+        private int upgrades = 0;
+
         public System.Drawing.Color FoodColor
         {
             get
@@ -37,6 +40,30 @@ namespace akwarium
                 else food += value;
 
                 if (food > 1.0f) food = 1.0f;
+            }
+        }
+
+        public bool Structure
+        {
+            get
+            {
+                return structure;
+            }
+            set
+            {
+                structure = value;
+            }
+        }
+
+        public int Upgrades
+        {
+            get
+            {
+                return upgrades;
+            }
+            set
+            {
+                upgrades = value;
             }
         }
 

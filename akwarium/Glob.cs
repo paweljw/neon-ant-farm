@@ -28,6 +28,35 @@ namespace akwarium
             arr[p.X][p.Y].eaten();
         }
 
+        public bool Structure(Point p)
+        {
+            return arr[p.X][p.Y].Structure;
+        }
+
+        public int Upgrades(Point p)
+        {
+            try
+            {
+                return arr[p.X][p.Y].Upgrades;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return 0;
+            }
+        }
+
+        public void UpgradeStructure(Point p)
+        {
+            arr[p.X][p.Y].Upgrades += 1;
+        }
+
+        public void PlaceStructure(Point p)
+        {
+            arr[p.X][p.Y].Structure = true;
+            arr[p.X][p.Y].Upgrades = 1;
+        }
+
         public Glob(int _x, int _y, Form1 p)
         {
             x = _x;

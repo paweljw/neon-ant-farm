@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using akwarium.Agents;
 
-namespace akwarium
+namespace akwarium.Behaviors
 {
     class UnderfedMovementBehavior : MovementBehavior
     {

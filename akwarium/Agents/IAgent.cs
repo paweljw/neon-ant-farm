@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 
-namespace akwarium
+namespace akwarium.Agents
 {
     interface IAgent
     {
@@ -37,5 +37,7 @@ namespace akwarium
 
         bool Dead();
         void Dead(bool d);
+
+        DrawSymbols drawAs();
     }
 }

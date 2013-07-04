@@ -8,11 +8,8 @@ using akwarium.Behaviors;
 
 namespace akwarium.Agents
 {
-    class SimpleAgent : IAgent
+    class FoodTickerAgent : IAgent
     {
-        double fed = 80;
-        int fov = 20;
-
         Color col;
 
         bool dead = false;
@@ -25,30 +22,18 @@ namespace akwarium.Agents
 
         List<Behavior> mb = new List<Behavior>();
 
-        int age = 0;
-
         Glob g;
-
-        int id;
-
-        static int created_Agents = 0;
-        static int alive_Agents = 0;
 
         Random rnd = new Random();
 
-        public DrawSymbols drawAs()
-        {
-            return DrawSymbols.DOT;
-        }
-        
-        public int FOV() { return fov; }
-        public void FOV(int f) { fov = f; }
+        public int FOV() { return 0; }
+        public void FOV(int f) {  }
 
         public Glob Glob() { return g; }
         public void Glob(Glob _g) { g = _g; }
 
-        public int Age() { return age; }
-        public void Age(int a) { age = a; }
+        public int Age() { return 0; }
+        public void Age(int a) {  }
 
         public void move()
         {
@@ -82,45 +67,27 @@ namespace akwarium.Agents
 
         public double Fed()
         {
-            return fed;
+            return 100;
         }
 
         public void Fed(double f)
         {
-            fed = f;
+            
         }
 
-        public static int CreatedAgents() { return created_Agents; }
-        public static int AliveAgents() { return alive_Agents; }
+        public Color Col() 
+        { 
+            return col; 
+        }
 
-        public SimpleAgent()
+        public void Col(Color c)
         {
-            created_Agents++;
-            alive_Agents++;
+            col = c;
+        }
 
-            ID(created_Agents);
-
-            // Age by 1 every cycle
-            mb.Add(new AgingBehavior(this, 1));
-
-            // Get hungrier by 0.75 every cycle
-            mb.Add(new HungerBehavior(this, 0.75f));
-
-            // Define how we behave while well fed (>90)
-            mb.Add(new WellFedMovementBehavior(this));
-
-            // Define how we behave while wed less-than-well (<=90)
-            mb.Add(new UnderfedMovementBehavior(this));
-
-            // Define how we eat
-            mb.Add(new FeedBehavior(this));
-
-            // Define how we multiply
-            mb.Add(new MultiplicationBehavior(this, 110));
-
-            // Sometimes we die.
-            mb.Add(new DeathBehavior(this));
-
+        public FoodTickerAgent()
+        {
+            mb.Add(new FoodTickerBehavior(this, 100));
             // Golden ratio conjugate for uniform distribution of random colors
             double golden_ratio_conjugate = 0.618033988749895;
 
@@ -132,44 +99,34 @@ namespace akwarium.Agents
             double h = rnd.NextDouble();
             h += golden_ratio_conjugate;
             h %= 1;
-
+            
             // Generate color
             HSLColor c = new HSLColor(h * 240, sat * 240, lum * 240);
 
             Col(c);
         }
 
-        public SimpleAgent(Point clp) : this()
+        public FoodTickerAgent(Point clp) : this()
         {
             Clip(clp);
             Pos(new Point(rnd.Next(clipX), rnd.Next(clipY)));
         }
 
-        public SimpleAgent(Point clp, Glob _g)
+        public FoodTickerAgent(Point clp, Glob _g)
             : this(clp)
         {
             g = _g;
         }
 
-        public SimpleAgent(Point clp, Point p, Glob _g) : this(clp, _g)
+        public FoodTickerAgent(Point clp, Point p, Glob _g) : this(clp, _g)
         {
             Pos(p);
         }
 
-        public SimpleAgent(Point clp, Point p, Glob _g, Color c)
+        public FoodTickerAgent(Point clp, Point p, Glob _g, Color c)
             : this(clp, p, _g)
         {
             Col(c);
-        }
-
-        public Color Col() 
-        { 
-            return col; 
-        }
-
-        public void Col(Color c)
-        {
-            col = c;
         }
 
         public bool Dead()
@@ -184,17 +141,18 @@ namespace akwarium.Agents
 
         public int ID()
         {
-            return id;
+            return 0;
         }
 
         public void ID(int i)
         {
-            id = i;
+            //
         }
 
-        ~SimpleAgent()
+        public DrawSymbols drawAs()
         {
-            alive_Agents--;
+            return DrawSymbols.CROSS;
         }
     }
 }
+
