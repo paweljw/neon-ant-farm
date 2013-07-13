@@ -109,8 +109,9 @@ namespace akwarium.Agents
             // Define how we behave while well fed (>90)
             mb.Add(new WellFedMovementBehavior(this));
 
+            int lim = 1;
             // Define how we behave while wed less-than-well (<=90)
-            mb.Add(new UnderfedMovementBehavior(this));
+            mb.Add(new UnderfedMovementBehavior(this, lim));
 
             // Define how we eat
             mb.Add(new FeedBehavior(this));

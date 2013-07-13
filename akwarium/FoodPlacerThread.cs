@@ -30,7 +30,14 @@ namespace akwarium
 
                 if (rnd.Next(1000) < 5) // magic number: food probability
                 {
-                    parent.Invoke(new Form1.placeGlobDelegate(parent.invokePlaceGlobDelegate));
+                    try
+                    {
+                        parent.Invoke(new Form1.placeGlobDelegate(parent.invokePlaceGlobDelegate));
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
                 }
 
                 Thread.Sleep(1000 / 60); // magic number: fps
@@ -43,11 +50,11 @@ namespace akwarium
 
             for (int i = 0; i < 50; i++) parent.Invoke(new Form1.placeGlobDelegate(parent.invokePlaceGlobDelegate));
 
-            running = true;
+            /*running = true;
             thr = new Thread(new ThreadStart(runner));
 
             thr.IsBackground = true;
-            thr.Start();
+            thr.Start();*/
         }
 
         public void stop()

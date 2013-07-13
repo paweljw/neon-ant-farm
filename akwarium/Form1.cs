@@ -35,6 +35,8 @@ namespace akwarium
 
         bool nodraw = false;
 
+        bool overPanel = false;
+
         private void resetGlob()
         {
             if (fpt != null) fpt.stop();
@@ -110,51 +112,58 @@ namespace akwarium
             if (repaintCounter > 60) repaintCounter = 1;
 
             // paint food et al.
-            LockBitmap lb = new LockBitmap(bwutw);
-            lb.LockBits();
-
-            for (int i = 0; i < glob.x; i++)
-                for (int j = 0; j < glob.y; j++)
-                {
-                    if (glob.arr[i][j].Food == 0)
-                        lb.SetPixel(i, j, Color.Black);
-                    else
-                        lb.SetPixel(i, j, glob.arr[i][j].FoodColor);
-                }
-
-            // paint agents
-            for (int i = 0; i < lst.Count; i++)
+            try
             {
-                Point p = lst[i].Pos();
+                LockBitmap lb = new LockBitmap(bwutw);
+                lb.LockBits();
 
-                // red rectangles <3
-                if (lst[i].drawAs() == DrawSymbols.DOT)
+                for (int i = 0; i < glob.x; i++)
+                    for (int j = 0; j < glob.y; j++)
+                    {
+                        if (glob.arr[i][j].Food == 0)
+                            lb.SetPixel(i, j, Color.Black);
+                        else
+                            lb.SetPixel(i, j, glob.arr[i][j].FoodColor);
+                    }
+
+                // paint agents
+                for (int i = 0; i < lst.Count; i++)
                 {
-                    for (int j = 0; j < 3; j++)
-                        for (int k = 0; k < 3; k++)
-                            if (p.X + j < bwutw.Width && p.Y + k < bwutw.Height)
-                                lb.SetPixel(p.X + j, p.Y + k, lst[i].Col());
+                    Point p = lst[i].Pos();
+
+                    // red rectangles <3
+                    if (lst[i].drawAs() == DrawSymbols.DOT)
+                    {
+                        for (int j = 0; j < 3; j++)
+                            for (int k = 0; k < 3; k++)
+                                if (p.X + j < bwutw.Width && p.Y + k < bwutw.Height)
+                                    lb.SetPixel(p.X + j, p.Y + k, lst[i].Col());
+                    }
+                    else if (lst[i].drawAs() == DrawSymbols.CROSS)
+                    {
+                        int wd = glob.Upgrades(p) * 5;
+                        int XB = p.X - wd;
+                        int XT = p.X + wd;
+
+                        int YB = p.Y - wd;
+                        int YT = p.Y + wd;
+
+                        for (int j = XB; j <= XT; j++)
+                            if (j < bwutw.Width)
+                                lb.SetPixel(j, p.Y, lst[i].Col());
+
+                        for (int j = YB; j <= YT; j++)
+                            if (j < bwutw.Height)
+                                lb.SetPixel(p.X, j, lst[i].Col());
+                    }
                 }
-                else if (lst[i].drawAs() == DrawSymbols.CROSS)
-                {
-                    int wd = glob.Upgrades(p)*5;
-                    int XB = p.X - wd;
-                    int XT = p.X + wd;
 
-                    int YB = p.Y - wd;
-                    int YT = p.Y + wd;
-
-                    for(int j=XB; j<=XT; j++)
-                        if(j < bwutw.Width)
-                            lb.SetPixel(j, p.Y, lst[i].Col());
-
-                    for (int j = YB; j <= YT; j++)
-                        if (j < bwutw.Height)
-                            lb.SetPixel(p.X, j, lst[i].Col());
-                }
+                lb.UnlockBits();
             }
-
-            lb.UnlockBits();
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
             g.DrawImage(bwutw, new Rectangle(0, 0, panel1.Width, panel1.Height));
 
@@ -178,7 +187,25 @@ namespace akwarium
             this.Activated += raiseFlag;
             this.Deactivate += lowerFlag;
 
+            panel1.MouseClick += Form1_MouseEnter;
+            
             colorByGeck();
+        }
+
+        void Form1_MouseEnter(object sender, EventArgs e)
+        {
+            if (overPanel)
+            {
+                flowLayoutPanel1.Visible = true;
+                overPanel = false;
+                return;
+            }
+            else
+            {
+                flowLayoutPanel1.Visible = false;
+                overPanel = true;
+                return;
+            }
         }
 
         private void lowerFlag(object sender, EventArgs e)

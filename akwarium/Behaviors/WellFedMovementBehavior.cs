@@ -89,18 +89,25 @@ namespace akwarium.Behaviors
                     parent.Glob().PlaceStructure(pos);
                     parent.Fed(30); // even more tiring than upgrade
 
-                    // Place the actual ticker object
-                    parent.Glob().parent.Invoke(
-                        new Form1.addAgentXYDelegate(
-                            parent.Glob().parent.addFTAgentXY
-                            ),
-                        new object[] 
+                    try
+                    {
+                        // Place the actual ticker object
+                        parent.Glob().parent.Invoke(
+                            new Form1.addAgentXYDelegate(
+                                parent.Glob().parent.addFTAgentXY
+                                ),
+                            new object[] 
                         { 
                             parent.Pos().X, 
                             parent.Pos().Y, 
                             parent.Col() 
                         }
-                    );
+                        );
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
                 }
 
                 // Now walk away whistling

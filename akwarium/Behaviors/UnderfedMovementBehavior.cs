@@ -11,6 +11,7 @@ namespace akwarium.Behaviors
     class UnderfedMovementBehavior : MovementBehavior
     {
         Random rnd = new Random();
+        int Lim = 1;
 
         public override bool isEligible()
         {
@@ -46,9 +47,9 @@ namespace akwarium.Behaviors
             int bestX = -1, bestY = -1;
             double best = 0;
 
-            for (int i = lowerX; i < upperX; i++)
+            for (int i = lowerX; i < upperX; i+=Lim)
             {
-                for (int j = lowerY; j < upperY; j++)
+                for (int j = lowerY; j < upperY; j+=Lim)
                 {
                     if (i == pos.X && j == pos.Y) continue; // skip current point, no sitting around!
                     // dlugosc wektora
@@ -105,6 +106,12 @@ namespace akwarium.Behaviors
         public UnderfedMovementBehavior(IAgent p)
         {
             parent = p;
+        }
+
+        public UnderfedMovementBehavior(IAgent p, int lim)
+            : this(p)
+        {
+            Lim = lim;
         }
     }
 }
